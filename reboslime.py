@@ -22,9 +22,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sdk = None
 global_quats = []
 
-# 姿态数据回调
-
-
+# Pose event callback
 def pose_msg_callback(self: rebocap_ws_sdk.RebocapWsSdk, tran: list, pose24: list, static_index: int, ts: float):
     for i in range(24):
         if i in CONFIG["imus"][str(REBOCAP_COUNT)]:
@@ -36,7 +34,7 @@ def pose_msg_callback(self: rebocap_ws_sdk.RebocapWsSdk, tran: list, pose24: lis
             # time.sleep(0.1)
 
 
-# 异常断开，这里处理重连或报错
+# Unexpected disconnection，handle reconnection attempts / error messages here
 def exception_close_callback(self: rebocap_ws_sdk.RebocapWsSdk):
     global sdk
     try:
@@ -48,27 +46,27 @@ def exception_close_callback(self: rebocap_ws_sdk.RebocapWsSdk):
 
 def init_rebocap_ws():
     global sdk
-    # 初始化sdk
+    # Initialise SDK
     sdk = rebocap_ws_sdk.RebocapWsSdk(coordinate_type=rebocap_ws_sdk.CoordinateType.UnityCoordinate, use_global_rotation=True)
-    # 设置姿态回调
+    # Set pose callback
     sdk.set_pose_msg_callback(pose_msg_callback)
-    # 设置异常断开回调
+    # Set disconnect callback
     sdk.set_exception_close_callback(exception_close_callback)
-    # 开始连接
+    # Connect
     open_ret = sdk.open(7690)
-    # 检查连接状态
+    # Check connection status
     if open_ret == 0:
-        console.print("Rebocap 客户端连接成功！")
+        console.print("ReboCap client connected successfully!")
     else:
-        console.print("Rebocap 客户端连接失败！", open_ret)
+        console.print("ReboCap client connection failed!", open_ret)
         if open_ret == 1:
-            console.print("Rebocap 客户端连接状态错误！")
+            console.print("ReboCap client connection state error!")
         elif open_ret == 2:
-            console.print("Rebocap 客户端连接失败！")
+            console.print("ReboCap client connection failed!")
         elif open_ret == 3:
-            console.print("Rebocap 客户端认证失败！")
+            console.print("ReboCap client authentication failed!")
         else:
-            console.print("未知错误！代码：", open_ret)
+            console.print("Unknown error! Code:", open_ret)
         exit(1)
 
 
@@ -157,27 +155,27 @@ console.print(" ___       _          ___  _  _             \n\
 |   // -_)|  _ \/ _ \\\__ \| || || '  \ / -_)\n\
 |_|_\\\___||____/\___/|___/|_||_||_|_|_|\___|  v" + VERSION + "\n\
 ")
-console.print("关于节点数目的使用说明：\n\
-· 6  点：胸部 + 髋部 + 大腿 + 小腿 \n\
-· 8  点：胸 + 腰 + 大腿 + 小腿 + 脚 \n\
-· 10 点：胸 + 腰 + 大腿 + 小腿 + 脚 + 大臂 \n\
-· 12 点：胸 + 腰 + 大腿 + 小腿 + 脚 + 大臂 + 小臂 \n\
-· 15 点：全身\n")
+console.print("Tracker point count guide:\n\
+- 6  points: Chest + Hips + Upper Legs + Lower Legs \n\
+- 8  points: Chest + Waist + Upper Legs + Lower Legs + Feet \n\
+- 10 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms \n\
+- 12 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms + Forearms \n\
+- 15 points: Full body\n")
 
 try:
     REBOCAP_COUNT = inputimeout(
-        "想要以几点动捕的形式运行呢？如无输入，将在 10 秒后以 8 点模式运行（请输入 6 / 8 / 10 / 12 / 15）: ", 10)
+        "How many points would you like to run with? If no input, will default to 8-point mode in 10 seconds (enter 6 / 8 / 10 / 12 / 15): ", 10)
 except TimeoutOccurred:
     REBOCAP_COUNT = 8
 
-# 连接 Rebocap
+# Connect to ReboCap
 init_rebocap_ws()
 
 # Connected To SlimeVR Server
 handshake = build_handshake()
 sock.sendto(handshake, (SLIME_IP, SLIME_PORT))
 PACKET_COUNTER += 1
-console.print("成功连接到 SlimeVR 服务器!")
+console.print("Successfully connected to SlimeVR server!")
 time.sleep(0.1)
 
 # Add additional IMUs. SlimeVR only supports one "real" tracker per IP so the workaround is to make all the
@@ -187,16 +185,16 @@ if int(REBOCAP_COUNT) in (6, 8, 10, 12, 15):
     add_imus(imus)
     console.print("Add IMUs: " + str(imus))
 else:
-    console.print("目前只支持 6 / 8 / 10 / 12 / 15 点哦！")
+    console.print("Only 6 / 8 / 10 / 12 / 15 points are supported!")
     exit()
 
 time.sleep(.5)
 ALL_CONNECTED = True
 
-console.print("已开启追踪！如果想要停止 ReboSlime, 多按几次 Ctrl-C 即可。")
+console.print("Tracking started! To stop ReboSlime, press Ctrl-C a few times.")
 
 try:
-    # TODO: 优雅地等待
+    # TODO: graceful wait
     time.sleep(1000000)
 except KeyboardInterrupt:
     sdk.close()
