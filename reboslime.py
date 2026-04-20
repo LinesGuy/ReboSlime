@@ -159,7 +159,7 @@ console.print("Tracker point count guide:\n\
 - 6  points: Chest + Hips + Upper Legs + Lower Legs \n\
 - 8  points: Chest + Waist + Upper Legs + Lower Legs + Feet \n\
 - 10 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms \n\
-- 12 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms + Forearms \n\
+- 12 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms + Lower Arms \n\
 - 15 points: Full body\n")
 
 try:
