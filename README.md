@@ -29,7 +29,7 @@
 
 - Download the executable from `Releases`. The latest `v0.4.2` supports ReboCap v40 and later. For the older version that works with VMT, download `v0.31`.
 - Open the SlimeVR Server.
-- Open the ReboCap client and click **Motion Calibration 1**.
+- Open the ReboCap client and click **Advanced Calibration**.
 - Run `run.bat` or `reboslime.exe`.
 - You should now see trackers appearing in SlimeVR! Follow the normal SlimeVR setup from here.
 
