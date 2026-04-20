@@ -10,8 +10,7 @@
 
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable-next-line MD036 -->
-<div>在 SlimeVR Server 中使用 ReboCap</div>
-<div style="margin-bottom: 12px">Use ReboCap in SlimeVR Server</div>
+<div>Use ReboCap with SlimeVR Server</div>
 
 <!-- prettier-ignore-end -->
 
@@ -21,49 +20,49 @@
   <a href="https://raw.githubusercontent.com/colasama/reboslime/master/LICENSE">
     <img src="https://img.shields.io/github/license/colasama/reboslime" alt="license">
   </a>
-  <img src="https://img.shields.io/badge/python-3.10.x-blue?logo=python&logoColor=edb641" alt="python">
+  <img src="https://img.shields.io/badge/python-3.11.x | 3.12.x-blue?logo=python&logoColor=edb641" alt="python">
 </p>
 
 
 
-## 使用说明
+## Usage
 
-- 下载 `Releases` 中的可执行文件，最新 `v0.4.2` 已适配 Rebocap v40 及以后的版本，如果想要使用之前与 VMT 相配合的程序，请下载 `v0.31` 版本。
-- 打开 SlimeVR 服务端。
-- 打开 ReboCap 客户端，点击 **动作校准1**。
-- 运行 `run.bat` 或者 `reboslime.exe`。
-- 现在应该能在 SlimeVR 中看到追踪器了！之后按照 SlimeVR 的用法来就可以了。
+- Download the executable from `Releases`. The latest `v0.4.2` supports ReboCap v40 and later. For the older version that works with VMT, download `v0.31`.
+- Open the SlimeVR Server.
+- Open the ReboCap client and click **Motion Calibration 1**.
+- Run `run.bat` or `reboslime.exe`.
+- You should now see trackers appearing in SlimeVR! Follow the normal SlimeVR setup from here.
 
-## 开发相关
+## Development
 
-- 本项目使用 `Poetry` 进行依赖管理，请安装 3.10.x 版本的 Python 后运行 `pip install poetry`。
-- 使用 `poetry install` 安装依赖，然后运行 `poetry run python reboslime.py` 即可运行程序。
+- This project uses `Poetry` for dependency management. Install Python 3.11.x or 3.12.x, then run `pip install poetry`.
+- Run `poetry install` to install dependencies, then `poetry run python reboslime.py` to start the program.
 
-## 打包相关
+## Building
 
-- 若要打包本项目为可执行文件，请在安装 `pyinstaller` 后运行以下代码。
+To package the project as an executable, install `pyinstaller` and run:
 
-  ```bash
-  pyinstaller -F -i .\assets\reboslime.ico reboslime.py
-  ```
+```bash
+pyinstaller -F -i .\assets\reboslime.ico reboslime.py
+```
 
-- 在打包完成后，将 `config.json` 放进可执行文件同目录下即可。
+After building, place `config.json` in the same directory as the executable.
 
-## 注意事项
+## Notes
 
-- 由于 ReboCap 客户端自身限制原因，目前必须按照原 VR 使用方法中佩戴胸、腰以及腿部 8 点，并且目前至少佩戴以上 8 个才能正常运行，目前可以在 6 / 8 / 10 / 12 / 15 点中选择。
-  - 6 点：胸 + 腰 + 大腿 + 小腿
-  - 8 点：胸 + 腰 + 大腿 + 小腿 + 脚
-  - 10 点：胸 + 腰 + 大腿 + 小腿 + 脚 + 大臂
-  - 12 点：胸 + 腰 + 大腿 + 小腿 + 脚 + 大臂 + 小臂
-  - 15 点：全身
-- **注意**：目前每一种选择都会出现一个 0 号节点，可以考虑不分配或者分配到 髋部。
+- Due to limitations in the ReboCap client, you must wear the trackers in the standard VR configuration. A minimum of 6 points is required. Supported configurations are 6 / 8 / 10 / 12 / 15 points:
+  - 6 points: Chest + Hips + Upper Legs + Lower Legs
+  - 8 points: Chest + Waist + Upper Legs + Lower Legs + Feet
+  - 10 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms
+  - 12 points: Chest + Waist + Upper Legs + Lower Legs + Feet + Upper Arms + Lower Arms
+  - 15 points: Full body
+- **Note**: Each configuration produces a node 0 (Pelvis). You can leave it unassigned or assign it to the hip in SlimeVR.
 
 ## ToDo
 
-- [x] 完成佩戴数量的选择。
-- [ ] 解决 15 点模式下头部节点疑似无法使用的问题。
+- [x] Add tracker count selection.
+- [ ] Investigate head node appearing non-functional in 15-point mode.
 
-## 感谢
+## Credits
 
-- https://github.com/lmore377/moslime - SlimeVR 网络传输部分，很大程度参考了整个项目的结构
+- https://github.com/lmore377/moslime — SlimeVR network transport reference; much of the packet structure is based on this project.
